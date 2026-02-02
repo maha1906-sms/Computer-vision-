@@ -1,0 +1,47 @@
+import cv2
+import matplotlib.pyplot as plt
+
+#Step 2: Read and Display Original Image (Level 0)
+img = cv2.imread("/content/WhatsApp Image 2026-01-21 at 2.15.28 PM.jpeg")
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+plt.imshow(img)
+plt.title("Original Image - Level 0")
+plt.axis("off")
+
+#Step 3: Generate Pyramid Level 1
+level1 = cv2.pyrDown(img)
+
+plt.imshow(level1)
+plt.title("Pyramid Level 1")
+plt.axis("off")
+
+#Step 4: Generate Multiple Pyramid Levels
+level2 = cv2.pyrDown(level1)
+level3 = cv2.pyrDown(level2)
+
+images = [img, level1, level2, level3]
+titles = ["Level 0", "Level 1", "Level 2", "Level 3"]
+
+plt.figure(figsize=(10,6))
+for i in range(4):
+    plt.subplot(2,2,i+1)
+    plt.imshow(images[i])
+    plt.title(titles[i])
+    plt.axis("off")
+plt.show()
+
+#Step 5: Display Image Size at Each Level
+for i, im in enumerate(images):
+    print(f"Level {i} image size: {im.shape}")
+
+#Step 6: Edge Detection at Different Pyramid Levels
+for i, im in enumerate(images):
+    gray = cv2.cvtColor(im, cv2.COLOR_RGB2GRAY)
+    edges = cv2.Canny(gray, 100, 200)
+
+    plt.figure()
+    plt.imshow(edges, cmap='gray')
+    plt.title(f"Edges at Pyramid Level {i}")
+    plt.axis("off")
+plt.show()
